@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Mahasiswa;
 use App\Models\Kelas;
+use App\Models\Matakuliah;
 use Illuminate\Foundation\Mix;
 use Illuminate\Http\Request;
 
@@ -19,7 +20,7 @@ class MahasiswaController extends Controller
         //
         //fungsi eloquent menampilkan data menggunakan pagination
         $mahasiswas = Mahasiswa::with('kelas')->get(); // Mengambil semua isi tabel
-        $posts = Mahasiswa::with('kelas')->orderBy('Nim', 'asc')->paginate(5);
+        $posts = Mahasiswa::with('kelas')->orderBy('Nim', 'asc')->paginate(3);
         return view('mahasiswas.index', compact('posts'));
         // with('i', (request()->input('page', 1) - 1) * 5);
 
@@ -168,7 +169,25 @@ class MahasiswaController extends Controller
 
         $posts = Mahasiswa::where('Nim', 'LIKE', "%" . $request->cari . "%")
             ->orWhere('Nama', 'LIKE', "%" . $request->cari . "%")
-            ->paginate(5);
+            ->paginate(3);
         return view('mahasiswas.index', compact('posts'));
+    }
+
+    public function khs(Mahasiswa $mahasiswa)
+    {
+        $matkuls = $mahasiswa->matakuliah;
+
+        return view('mahasiswas.khs', [
+            'matkuls' => $matkuls,
+            'mahasiswa' => $mahasiswa
+        ]);
+        // dd($matkuls);
+
+        // $role = Mahasiswa::where('Nim', '2141720039')->first();
+
+        // dd($role->matakuliahs);
+
+
+        // dd($data);
     }
 }

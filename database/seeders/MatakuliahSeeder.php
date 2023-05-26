@@ -41,6 +41,6 @@ class MatakuliahSeeder extends Seeder
             ],
         ];
 
-        DB::table('matakuliah')->insert($matkul);
+        DB::table('matakuliahs')->insert($matkul);
     }
 }

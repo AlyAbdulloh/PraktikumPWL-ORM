@@ -29,9 +29,9 @@
             <th>Kelas</th>
             <th>Jurusan</th>
             <th>No_Handphone</th>
-            <th>Email</th>
-            <th>Tanggal_lahir</th>
-            <th width="280px">Action</th>
+            {{-- <th>Email</th>
+            <th>Tanggal_lahir</th> --}}
+            <th width="300px">Action</th>
         </tr>
         @foreach ($posts as $Mahasiswa)
             <tr>
@@ -41,8 +41,8 @@
                 <td>{{ $Mahasiswa->kelas->nama_kelas }}</td>
                 <td>{{ $Mahasiswa->Jurusan }}</td>
                 <td>{{ $Mahasiswa->No_Handphone }}</td>
-                <td>{{ $Mahasiswa->Email }}</td>
-                <td>{{ $Mahasiswa->Tanggal_lahir }}</td>
+                {{-- <td>{{ $Mahasiswa->Email }}</td>
+                <td>{{ $Mahasiswa->Tanggal_lahir }}</td> --}}
                 <td>
                     <form action="{{ route('mahasiswa.destroy', $Mahasiswa->Nim) }}" method="POST">
 
@@ -51,6 +51,7 @@
                         @csrf
                         @method('DELETE')
                         <button type="submit" class="btn btn-danger">Delete</button>
+                        <a class="btn btn-warning" href="{{ route('mahasiswa.khs', $Mahasiswa->Nim) }}">Nilai</a>
                     </form>
                 </td>
             </tr>
