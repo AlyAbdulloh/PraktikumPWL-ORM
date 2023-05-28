@@ -7,6 +7,8 @@ use App\Models\Kelas;
 use App\Models\Matakuliah;
 use Illuminate\Foundation\Mix;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
+use Barryvdh\DomPDF\Facade\Pdf;
 
 
 
@@ -45,6 +47,7 @@ class MahasiswaController extends Controller
         $request->validate([
             'Nim' => 'required',
             'Nama' => 'required',
+            'foto' => 'mimes:jpg,png,jpeg',
             'Kelas' => 'required',
             'Jurusan' => 'required',
             'No_Handphone' => 'required',
@@ -52,9 +55,16 @@ class MahasiswaController extends Controller
             'Tanggal_lahir' => 'required',
         ]);
 
+        if ($request->file('foto')) {
+            $nama_foto = $request->file('foto')->store('fotoMahasiswa', 'public');
+        } else {
+            dd('foto kosong');
+        }
+
         $mahasiswa = new Mahasiswa;
         $mahasiswa->Nim = $request->get('Nim');
         $mahasiswa->Nama = $request->get('Nama');
+        $mahasiswa->foto = $nama_foto;
         $mahasiswa->kelas_id = $request->get('Kelas');
         $mahasiswa->Jurusan = $request->get('Jurusan');
         $mahasiswa->No_Handphone = $request->get('No_Handphone');
@@ -109,12 +119,15 @@ class MahasiswaController extends Controller
         $request->validate([
             'Nim' => 'required',
             'Nama' => 'required',
+            'foto' => 'mimes:jpg,png,jpeg',
             'Kelas' => 'required',
             'Jurusan' => 'required',
             'No_Handphone' => 'required',
             'Email' => 'required',
             'Tanggal_lahir' => 'required',
         ]);
+
+        $mhs = Mahasiswa::find($Nim);
 
         // $mahasiswa = Mahasiswa::where('Nim', $Nim)->first();
         // $mahasiswa->Nim = $request->get('Nim');
@@ -129,9 +142,16 @@ class MahasiswaController extends Controller
         // $kelas = new Kelas;
         // $kelas->id = $request->get('Kelas');
 
+        if ($mhs->foto && file_exists(storage_path('app/public/' . $mhs->foto))) {
+            Storage::delete('public/' . $mhs->foto);
+        }
+
+        $nama_foto = $request->file('foto')->store('fotoMahasiswa', 'public');
+
         Mahasiswa::where('Nim', $Nim)->update([
             'Nim' => $request->get('Nim'),
             'Nama' => $request->get('Nama'),
+            'foto' => $nama_foto,
             'Jurusan' => $request->get('Jurusan'),
             'No_Handphone' => $request->get('No_Handphone'),
             'Email' => $request->get('Email'),
@@ -157,6 +177,12 @@ class MahasiswaController extends Controller
     {
         //fungsi eloquent untuk menghapus data
         // Mahasiswa::find($Nim)->delete();
+        $mhs = Mahasiswa::find($Nim);
+
+        if ($mhs->foto && file_exists(storage_path('app/public/' . $mhs->foto))) {
+            Storage::delete('public/' . $mhs->foto);
+        }
+
         Mahasiswa::where('Nim', $Nim)->delete();
         return redirect()->route('mahasiswa.index')
             ->with('success', 'Mahasiswa Berhasil Dihapus');
@@ -189,5 +215,15 @@ class MahasiswaController extends Controller
 
 
         // dd($data);
+    }
+
+    public function cetak_khs(Mahasiswa $mahasiswa)
+    {
+        $matkuls = $mahasiswa->matakuliah;
+        $pdf = pdf::loadview('mahasiswas.cetak_khs', [
+            'matkuls' => $matkuls,
+            'mahasiswa' => $mahasiswa,
+        ]);
+        return $pdf->stream();
     }
 }

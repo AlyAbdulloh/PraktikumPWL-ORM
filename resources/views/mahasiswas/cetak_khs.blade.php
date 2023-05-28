@@ -17,10 +17,10 @@
     <div class="row">
         <div class="col-lg-12 margin-tb">
             <div class="pull-left mt-2 text-center">
-                <h2>JURUSAN TEKNOLOGI INFORMASI-POLITEKNIK NEGERI MALANG</h2>
+                <h5>JURUSAN TEKNOLOGI INFORMASI-POLITEKNIK NEGERI MALANG</h5>
             </div>
             <div class="text-center mt-5">
-                <h1>KARTU HASIL STUDI (KHS)</h1>
+                <h4>KARTU HASIL STUDI (KHS)</h4>
             </div>
         </div>
     </div>
@@ -60,11 +60,5 @@
 
             </tbody>
         </table>
-
-        <div class="text-center" style="margin-top: 37px">
-            <a href="{{ route('mahasiswa.cetak_khs', $mahasiswa->Nim) }}" class="btn"
-                style="background: #DB1514; color: white; font-weight: 600;">Cetak ke
-                PDF</a>
-        </div>
     </div>
 @endsection
