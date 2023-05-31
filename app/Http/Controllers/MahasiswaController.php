@@ -56,7 +56,8 @@ class MahasiswaController extends Controller
         ]);
 
         if ($request->file('foto')) {
-            $nama_foto = $request->file('foto')->store('fotoMahasiswa', 'public');
+            // $nama_foto = $request->file('foto')->store('fotoMahasiswa', 'public');
+            $nama_foto = $request->file('foto')->store('fotoMahasiswa');
         } else {
             dd('foto kosong');
         }
@@ -146,7 +147,8 @@ class MahasiswaController extends Controller
             Storage::delete('public/' . $mhs->foto);
         }
 
-        $nama_foto = $request->file('foto')->store('fotoMahasiswa', 'public');
+        // $nama_foto = $request->file('foto')->store('fotoMahasiswa', 'public');
+        $nama_foto = $request->file('foto')->store('fotoMahasiswa');
 
         Mahasiswa::where('Nim', $Nim)->update([
             'Nim' => $request->get('Nim'),

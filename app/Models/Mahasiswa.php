@@ -15,17 +15,17 @@ class Mahasiswa extends Model
     public $timestamps = false;
     protected $primaryKey = 'Nim';
 
-    protected $fillable = [
-        'Nim',
-        'Nama',
-        'foto',
-        'kelas_id',
-        'Jurusan',
-        'No_Handphone',
-        'Email',
-        'Tanggal_lahir',
-    ];
-    // protected $guarded = [];
+    // protected $fillable = [
+    //     'Nim',
+    //     'Nama',
+    //     'foto',
+    //     'kelas_id',
+    //     'Jurusan',
+    //     'No_Handphone',
+    //     'Email',
+    //     'Tanggal_lahir',
+    // ];
+    protected $guarded = [''];
 
     public function kelas()
     {
